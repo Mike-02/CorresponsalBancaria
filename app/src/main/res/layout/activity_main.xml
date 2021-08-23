@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="cerrar"
+    tools:context=".Activities.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_grey_900"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="85dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nameCorres"
+                        android:layout_width="112dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:textColor="@color/blue_grey_500" />
+
+                    <TextView
+                        android:id="@+id/balanceCorres"
+                        android:layout_width="90dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/blue_grey_500" />
+
+                    <Button
+                        android:id="@+id/cerrar"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="25dp"
+                        android:onClick="cerrar"
+                        android:text="Cerrar Sesion"
+                        android:textColor="@color/blue_grey_900"
+                        app:cornerRadius="100dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/Transacciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="95dp"
+                    android:layout_marginTop="35dp"
+                    android:fontFamily="casual"
+                    android:text="Transacciones"
+                    android:textColor="@color/blue_grey_500"
+                    android:textSize="36sp" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="50dp"
+                    android:layout_marginTop="50dp"
+                    app:srcCompat="@drawable/ic_money_transfer"
+                    app:tint="@color/green_300" />
+
+                <Button
+                    android:id="@+id/retiro"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="retiro"
+                    android:text="Retiro"
+                    android:textColor="@color/blue_grey_900"
+                    app:cornerRadius="40dp" />
+
+                <Button
+                    android:id="@+id/consultasSaldo"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="consulta"
+                    android:text="Consultas de saldo"
+                    android:textColor="@color/blue_grey_900"
+                    app:cornerRadius="40dp" />
+
+                <Button
+                    android:id="@+id/deposito"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:onClick="deposito"
+                    android:text="Deposito"
+                    android:textColor="@color/blue_grey_900"
+                    app:cornerRadius="40dp" />
+
+                <Button
+                    android:id="@+id/cuenta"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="144dp"
+                    android:onClick="registroClient"
+                    android:text="Crear Cuenta "
+                    android:textColor="@color/blue_grey_900"
+                    app:cornerRadius="40dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

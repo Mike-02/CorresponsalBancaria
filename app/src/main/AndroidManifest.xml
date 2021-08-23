@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.corresponsalbancaria">
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="16" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CorresponsalBancaria">
+        <activity android:name=".Activities.RegistroHistorialActivity"></activity>
+        <activity android:name=".SaldoDisponible" />
+        <activity android:name=".Activities.ConsultaActivity" />
+        <activity android:name=".Activities.DepositoActivity" />
+        <activity android:name=".Activities.RetiroActivity" />
+        <activity android:name=".Activities.RegistroClienteActivity" />
+        <activity android:name=".Activities.RegistroCorresponsalActivity" />
+        <activity android:name=".Activities.LoginActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.MainActivity" />
+    </application>
+
+</manifest>
