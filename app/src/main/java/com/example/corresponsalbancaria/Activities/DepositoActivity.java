@@ -77,7 +77,7 @@ public class DepositoActivity extends AppCompatActivity {
                     } else {
 
                         cliente.setSaldo(Integer.parseInt(balance));
-                        if (!funciones.validarMontoCorresponsal(corresponsal)){
+                        if (corresponsal.getBalance() < cliente.getSaldo()){
                             Toast.makeText(this, "Saldo Insuficiente", Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -86,8 +86,6 @@ public class DepositoActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Retiro Fallido", Toast.LENGTH_SHORT).show();
 
                             } else {
-
-
 
                                 newsaldo = corresponsal.getBalance() - Integer.parseInt(balance) + 1000;
                                 corresponsal.setBalance(newsaldo);

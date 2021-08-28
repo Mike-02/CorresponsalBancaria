@@ -270,27 +270,6 @@ public class Funciones {
         return false;
     }
 
-    public boolean validarMontoCorresponsal(Corresponsal corresponsal) {
-        SQLiteDatabase db = this.myDataBase.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_CORRESPONDENT+ " WHERE " + CORRESPONDENT_DOCUMENTS+ " = '" + corresponsal.getDocuments() + "';";
-        Cursor cursor = db.rawQuery(query, null);
-        try {
-            if (cursor.getCount() != 0) {
-                while (cursor.moveToNext()) {
-                    int bal = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CORRESPONDENT_BALANCE)));
-                    if (corresponsal.getBalance() < bal) {
-                        int res = bal + corresponsal.getBalance();
-                        corresponsal.setBalance(res);
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.toString();
-            return false;
-        }
-        return false;
-    }
 
     public boolean saldoDeposito(Cliente cliente) {
         ContentValues values = cliente.client();
