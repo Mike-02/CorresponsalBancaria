@@ -269,6 +269,27 @@ public class Funciones {
         }
         return false;
     }
+    public boolean saldoDe(Cliente cliente) {
+        SQLiteDatabase db = this.myDataBase.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CLIENT + " WHERE " + CLIENT_CEDULA + " = '" + cliente.getCedula() + "';";
+        Cursor cursor = db.rawQuery(query, null);
+        try {
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    int ret = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CLIENT_BALANCE)));
+                    int resul = ret + cliente.getSaldo();
+                    cliente.setSaldo(resul);
+
+                    return true;
+
+                }
+            }
+        } catch (Exception ex) {
+            ex.toString();
+            return false;
+        }
+        return false;
+    }
 
 
     public boolean saldoDeposito(Cliente cliente) {

@@ -81,7 +81,7 @@ public class DepositoActivity extends AppCompatActivity {
                             Toast.makeText(this, "Saldo Insuficiente", Toast.LENGTH_SHORT).show();
 
                         } else {
-
+                                funciones.saldoDe(cliente);
                             if (!funciones.saldoDeposito(cliente)){
                                 Toast.makeText(this, "Retiro Fallido", Toast.LENGTH_SHORT).show();
 
