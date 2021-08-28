@@ -1,5 +1,6 @@
 package com.example.corresponsalbancaria;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,19 +10,13 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.corresponsalbancaria.DataBase.MyDataBase;
 import com.example.corresponsalbancaria.POJOs.Cliente;
 import com.example.corresponsalbancaria.POJOs.Corresponsal;
+import com.example.corresponsalbancaria.POJOs.Historial;
 
-import static com.example.corresponsalbancaria.Constantes.CLIENT_BALANCE;
-import static com.example.corresponsalbancaria.Constantes.CLIENT_CEDULA;
-import static com.example.corresponsalbancaria.Constantes.CLIENT_PIN;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_BALANCE;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_DOCUMENTS;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_ID;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_MAIL;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_NAME;
-import static com.example.corresponsalbancaria.Constantes.CORRESPONDENT_PASSWORD;
-import static com.example.corresponsalbancaria.Constantes.TABLE_CLIENT;
-import static com.example.corresponsalbancaria.Constantes.TABLE_CORRESPONDENT;
+import static com.example.corresponsalbancaria.Constantes.*;
 
+import java.util.ArrayList;
+
+@SuppressLint("Range")
 public class Funciones {
     private Context context;
     private SQLiteDatabase db;
@@ -202,8 +197,8 @@ public class Funciones {
     public boolean saldo(Cliente cliente){
         ContentValues values = cliente.client();
         SQLiteDatabase db = this.myDataBase.getWritableDatabase();
-        db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
-        if (true){
+        int ret = db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
+        if (ret !=0){
             return true;
         } else {
             return false;
@@ -214,8 +209,8 @@ public class Funciones {
     public boolean newSaldoCorres(Corresponsal corresponsal){
         ContentValues values = corresponsal.comision();
         SQLiteDatabase db = this.myDataBase.getWritableDatabase();
-        db.update(TABLE_CORRESPONDENT, values, CORRESPONDENT_BALANCE, null);
-        if (true){
+        int ret = db.update(TABLE_CORRESPONDENT, values, CORRESPONDENT_BALANCE, null);
+        if (ret !=0){
             return true;
         } else {
             return false;
@@ -263,10 +258,29 @@ public class Funciones {
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     String cedula = cursor.getString(cursor.getColumnIndex(CLIENT_CEDULA));
-                    int bal = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CLIENT_BALANCE)));
                     if ((cliente.getCedula().equals(cedula))) {
-                        int res = bal + cliente.getSaldo();
-                        cliente.setSaldo(res);
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.toString();
+            return false;
+        }
+        return false;
+    }
+
+    public boolean validarMontoCorresponsal(Corresponsal corresponsal) {
+        SQLiteDatabase db = this.myDataBase.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CORRESPONDENT+ " WHERE " + CORRESPONDENT_DOCUMENTS+ " = '" + corresponsal.getDocuments() + "';";
+        Cursor cursor = db.rawQuery(query, null);
+        try {
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    int bal = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CORRESPONDENT_BALANCE)));
+                    if (corresponsal.getBalance() < bal) {
+                        int res = bal + corresponsal.getBalance();
+                        corresponsal.setBalance(res);
                         return true;
                     }
                 }
@@ -281,8 +295,8 @@ public class Funciones {
     public boolean saldoDeposito(Cliente cliente) {
         ContentValues values = cliente.client();
         SQLiteDatabase db = this.myDataBase.getWritableDatabase();
-        db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
-        if (true) {
+        int ret = db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
+        if (ret !=0) {
             return true;
         } else {
             return false;
@@ -330,13 +344,43 @@ public class Funciones {
     public boolean nuevoSaldoConsul(Cliente cliente){
         ContentValues values = cliente.client();
         SQLiteDatabase db = this.myDataBase.getWritableDatabase();
-        db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
-        if (true){
+        int ret = db.update(TABLE_CLIENT, values, CLIENT_CEDULA + " = " + cliente.getCedula(), null);
+        if (ret !=0){
             return true;
         } else {
             return false;
         }
 
     }
+
+    //historial
+    public boolean registroHistorial(Historial historial){
+        ContentValues values = historial.historial();
+        int ret = (int) db.insert(TABLE_REGISTRO, null, values);
+        if (ret > -1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public ArrayList<Historial> getHistorial() {
+        ArrayList<Historial> historials = new ArrayList<>();
+        SQLiteDatabase db = this.myDataBase.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_REGISTRO;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                Historial historial = new Historial();
+                historial.setCedula(cursor.getString(cursor.getColumnIndex(REGISTRO_CEDULA)));
+                historial.setBalance(cursor.getString(cursor.getColumnIndex(REGISTRO_BALANCE)));
+                historial.setTransaccion(cursor.getString(cursor.getColumnIndex(REGISTRO_TRANSACCION)));
+                historial.setFecha(cursor.getString(cursor.getColumnIndex(REGISTRO_FECHA)));
+                historials.add(historial);
+            }
+        }
+        return historials;
+    }
+
 
 }

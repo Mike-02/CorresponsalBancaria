@@ -66,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    public void historial(View view){
+        Intent intent = new Intent(this, RegistroHistorialActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 
 }

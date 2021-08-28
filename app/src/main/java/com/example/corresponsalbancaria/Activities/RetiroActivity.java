@@ -7,16 +7,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 
+import static com.example.corresponsalbancaria.Constantes.RETIRO;
 import com.example.corresponsalbancaria.Funciones;
 import com.example.corresponsalbancaria.POJOs.Cliente;
 import com.example.corresponsalbancaria.POJOs.Corresponsal;
+import com.example.corresponsalbancaria.POJOs.Historial;
 import com.example.corresponsalbancaria.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class RetiroActivity extends AppCompatActivity {
@@ -26,7 +31,6 @@ public class RetiroActivity extends AppCompatActivity {
     TextInputEditText retPin;
     TextInputEditText retConfirmPin;
     TextInputEditText retMounted;
-
 
 
     @Override
@@ -40,74 +44,116 @@ public class RetiroActivity extends AppCompatActivity {
         retMounted = findViewById(R.id.retMounted);
     }
 
-    public void procesoRetiro(View view){
+    public void procesoRetiro(View view) {
         Funciones funciones = new Funciones(getApplicationContext());
         Cliente cliente = new Cliente();
         Corresponsal corresponsal;
-        String identificacion = retIdentification.getText().toString();
-        String pin = retPin.getText().toString();
-        cliente.setCedula(identificacion);
-        cliente.setPin(pin);
-        if (retIdentification.getText().toString().isEmpty()){
+        String identificacion = String.valueOf(retIdentification.getText());
+        String pin = String.valueOf(retPin.getText());
+
+        if (identificacion.equals("")) {
             retIdentification.setError("El  campo no debe quedar vacio");
-        } else if (retPin.getText().toString().isEmpty()){
-            retPin.setError("El  campo no debe quedar vacio");
-        } else if (funciones.validarUsuario(cliente)) {
-
-             if (retConfirmPin.getText().toString().isEmpty()){
-                retConfirmPin.setError("El  campo no debe quedar vacio");
-             }else {
-
-             }
-
-            funciones.open();
-            Toast.makeText(this, "Si Existe el Usuario", Toast.LENGTH_SHORT).show();
-
-            if (retPin.getText().toString().equals(retConfirmPin.getText().toString())){
-                if (retMounted.getText().toString().isEmpty()){
-                    retMounted.setError("El  campo no debe quedar vacio");
+        } else {
+            cliente.setCedula(identificacion);
+            if (pin.equals("")) {
+                retPin.setError("El  campo no debe quedar vacio");
+            } else {
+                cliente.setPin(pin);
+                if (!funciones.validarUsuario(cliente)) {
+                    retIdentification.setText("");
+                    retPin.setText("");
+                    retConfirmPin.setText("");
+                    retMounted.setText("");
+                    Toast.makeText(this, "El Usuario No Existe", Toast.LENGTH_SHORT).show();
                 } else {
+                    String comfirmPin = String.valueOf(retConfirmPin.getText());
+                    funciones.open();
+                    Toast.makeText(this, "Si Existe el Usuario", Toast.LENGTH_SHORT).show();
+                    if (comfirmPin.equals("")) {
+                        retConfirmPin.setError("El  campo no debe quedar vacio");
+                    } else {
 
-                    int mounted = Integer.parseInt(retMounted.getText().toString());
-                         cliente.setSaldo(mounted);
-                    if (funciones.validarMonto(cliente)) {
-
-                        Toast.makeText(this, "exito", Toast.LENGTH_SHORT).show();
-
-                        if (funciones.saldo(cliente)) {
-
-                            SharedPreferences preferences = getSharedPreferences("comision", Context.MODE_PRIVATE);
-                            String mail = preferences.getString("correspondent_mail", "");
-                            corresponsal = funciones.getCorresponsal(mail);
-
-                            int newsaldo = corresponsal.getBalance() + mounted + 2000;
-                            corresponsal.setBalance(newsaldo);
-                            funciones.newSaldoCorres(corresponsal);
-
-                            Toast.makeText(this, "Retiro exitoso", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
-                            funciones.close();
+                        if (!pin.equals(comfirmPin)) {
+                            Toast.makeText(this, "Los pin no considen", Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Toast.makeText(this, "Retiro Fallido", Toast.LENGTH_SHORT).show();
-                        }
+                            String mounted = String.valueOf(retMounted.getText());
+                            if (mounted.equals("")) {
+                                retMounted.setError("El  campo no debe quedar vacio");
+                            } else {
 
-                    } else {
-                        Toast.makeText(this, "Saldo Insuficiente", Toast.LENGTH_SHORT).show();
+
+                                cliente.setSaldo(Integer.parseInt(mounted));
+
+                                if (!funciones.validarMonto(cliente)) {
+                                    Toast.makeText(this, "Saldo Insuficiente", Toast.LENGTH_SHORT).show();
+
+                                } else {
+
+                                    Toast.makeText(this, "exito", Toast.LENGTH_SHORT).show();
+
+                                    if (!funciones.saldo(cliente)) {
+                                        Toast.makeText(this, "Retiro Fallido", Toast.LENGTH_SHORT).show();
+
+                                    } else {
+
+                                        SharedPreferences preferences = getSharedPreferences("comision", Context.MODE_PRIVATE);
+                                        String mail = preferences.getString("correspondent_mail", "");
+                                        corresponsal = funciones.getCorresponsal(mail);
+
+                                        int newsaldo = corresponsal.getBalance() + Integer.parseInt(mounted) + 2000;
+                                        corresponsal.setBalance(newsaldo);
+                                        funciones.newSaldoCorres(corresponsal);
+                                        Historial historial = new Historial();
+                                        historial.setCedula(identificacion);
+                                        historial.setBalance(mounted);
+                                        historial.setTransaccion(RETIRO);
+                                        historial.setFecha(fecha() + " \n " + hora());
+                                        funciones.registroHistorial(historial);
+
+                                        Toast.makeText(this, "Retiro exitoso", Toast.LENGTH_SHORT).show();
+                                        onBackPressed();
+                                        funciones.close();
+
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            } else {
-                Toast.makeText(this, "Los pin no considen", Toast.LENGTH_SHORT).show();
             }
-
-        } else {
-            retIdentification.setText("");
-            retPin.setText("");
-            retConfirmPin.setText("");
-            retMounted.setText("");
-            Toast.makeText(this, "El Usuario No Existe", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private  String fecha(){
+        Date date = new Date();
+        String formatoFecha = "yyyy-MM-dd";
+
+        String fecha = "";
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(formatoFecha);
+            fecha = dateFormat.format(date);
+        } catch (Exception e){
+            Log.e("ERROR", e.toString());
+
+        }
+        return fecha;
+    }
+
+    private  String hora(){
+        Date date = new Date();
+        String formatoHora = "HH:mm:ss";
+
+        String hora = "";
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(formatoHora);
+            hora = dateFormat.format(date);
+        } catch (Exception e){
+            Log.e("ERROR", e.toString());
+
+        }
+        return hora;
     }
 
 }

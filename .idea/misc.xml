@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_deposito.xml" value="0.1793478260869565" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_registro_corresponsal.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_registro_historial.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_retiro.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/activity_transferencias.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudio/CorresponsalBancaria/app/src/main/res/layout/historial.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

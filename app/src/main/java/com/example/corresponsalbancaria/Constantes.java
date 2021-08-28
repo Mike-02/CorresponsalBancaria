@@ -40,11 +40,11 @@ public class Constantes {
             " DROP TABLE " + TABLE_CORRESPONDENT;
 
     //
-    public static final String TABLE_REGISTRO   = "registro";
-    public static final String REGISTRO_CEDULA    = "registro_cedula";
-    public static final String REGISTRO_BALANCE = "registro_balance";
+    public static final String TABLE_REGISTRO       = "registro";
+    public static final String REGISTRO_CEDULA      = "registro_cedula";
+    public static final String REGISTRO_BALANCE     = "registro_balance";
     public static final String REGISTRO_TRANSACCION = "registro_transaccion";
-    public static final String REGISTRO_FECHA = "registro_fecha";
+    public static final String REGISTRO_FECHA       = "registro_fecha";
 
     public static final String TABLE_REGISTRO_DATA =
             " CREATE TABLE " + TABLE_REGISTRO + "(" +
@@ -55,4 +55,8 @@ public class Constantes {
 
     public static final String DELETE_DATA_REGISTRO =
             " DROP TABLE " + TABLE_REGISTRO;
+
+    public static final String RETIRO    = "retiro";
+    public static final String DEPOSITO  = "deposito";
+    public static final String CONSULTA  = "consulta";
 }

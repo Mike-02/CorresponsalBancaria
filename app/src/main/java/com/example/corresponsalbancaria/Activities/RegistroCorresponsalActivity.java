@@ -55,7 +55,6 @@ public class RegistroCorresponsalActivity extends AppCompatActivity {
         corresponsal.setMail(mail);
         corresponsal.setPassword(password);
         corresponsal.setBalance(1000000);
-        corresponsal.setBalance(R.string.retiro);
 
         if (coName.getText().toString().isEmpty()) {
             coName.setError("El  campo no debe quedar vacio");
